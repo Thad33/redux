@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
-import { addTodo } from '../features/todosSlice';
-
+import { addToDo } from '../Reducers/todoSlider';
 const AddTodo = () => {
-  const [text, setText] = useState('');
   const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const todo = {
-      id: nanoid(),
-      text: text,
-    };
-    dispatch(addTodo(todo));
-    setText('');
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
-      <button type="submit">Add Todo</button>
-    </form>
-  );
+  const [ state, setState ] = useState({
+     content: '',
+     contentError: null
+  });
+  const handleChange = (e) =>{
+    setState({...state, 
+          [e.target.name]: e.target.value,
+          [`${e.target.name}Error`]: null });
+  }
+  const add = () =>{
+    if(content === ''){
+      setState({...state, 
+         contentError: 'You must write something!'});
+       return;
+    }
+    dispatch(addToDo({newContent: content}));
+    setState({...state, content: ''});
+  }
+  const { content, contentError } = state;
+   return <div className='form'>
+      <h2>What's your plan for today</h2>
+      <input type='text' value={content} 
+        name='content' 
+        onChange={handleChange}>
+      </input>
+      <button type='button' className='button' 
+        onClick={add}>Add
+      </button>
+      {contentError ? 
+         <div className='error'>{contentError}</div>: null}
+    </div>;
 };
-
 export default AddTodo;

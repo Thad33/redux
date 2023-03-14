@@ -1,14 +1,12 @@
-import React from 'react';
-import TodoList from './components/TodoList';
+import './App.css';
 import AddTodo from './components/AddTodo';
-
+import ListTodo from './components/ListTodo';
 function App() {
   return (
-    <div>
+    <div className="App">
       <AddTodo />
-      <TodoList />
+      <ListTodo />
     </div>
   );
 }
-
 export default App;
